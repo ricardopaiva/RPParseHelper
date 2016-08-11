@@ -19,18 +19,22 @@
     return device;
 }
 
-+ (void)subscribeChannel:(NSString *)channel
++ (void)subscribeToChannelInBackground:(NSString *)channel block:(PFBooleanResultBlock)block
 {
-    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-    [currentInstallation addUniqueObject:channel forKey:@"channels"];
-    [currentInstallation saveInBackground];
+    [PFPush subscribeToChannelInBackground:channel block:block];
+    
+//    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+//    [currentInstallation addUniqueObject:channel forKey:@"channels"];
+//    [currentInstallation saveInBackground];
 }
 
-+ (void)unsubscribeChannel:(NSString *)channel
++ (void)unsubscribeToChannelInBackground:(NSString *)channel block:(PFBooleanResultBlock)block
 {
-    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-    [currentInstallation removeObject:channel forKey:@"channels"];
-    [currentInstallation saveInBackground];
+    [PFPush unsubscribeFromChannelInBackground:channel block:block];
+    
+//    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+//    [currentInstallation removeObject:channel forKey:@"channels"];
+//    [currentInstallation saveInBackground];
 }
 
 @end

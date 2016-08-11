@@ -25,13 +25,13 @@
  *
  *  @param channel -> string with channel to subscribe.
  */
-+ (void)subscribeChannel:(NSString *)channel;
++ (void)subscribeToChannelInBackground:(NSString *)channel block:(PFBooleanResultBlock)block;
 
 /**
  *  Unsubscribes a specified channel
  *
  *  @param channel -> string with channel to subscribe.
  */
-+ (void)unsubscribeChannel:(NSString *)channel;
++ (void)unsubscribeToChannelInBackground:(NSString *)channel block:(PFBooleanResultBlock)block;
 
 @end
