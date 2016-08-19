@@ -34,4 +34,11 @@
  */
 + (void)unsubscribeToChannelInBackground:(NSString *)channel block:(PFBooleanResultBlock)block;
 
+/**
+ *  Verifies if current user is logged in and verified.
+ *
+ *  @return <#return value description#>
+ */
++ (BOOL)verifiedUserIsLoggedIn;
+
 @end

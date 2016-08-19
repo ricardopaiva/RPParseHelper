@@ -37,4 +37,19 @@
 //    [currentInstallation saveInBackground];
 }
 
++ (BOOL)verifiedUserIsLoggedIn
+{
+    PFUser *currentUser = [PFUser currentUser];
+    
+    if (currentUser) {
+        if (![[currentUser objectForKey:@"emailVerified"] boolValue]) {
+            [currentUser fetch];
+        }
+    }
+    
+    BOOL emailIsVerified = [[currentUser objectForKey:@"emailVerified"] boolValue];
+    
+    return (currentUser && emailIsVerified);
+}
+
 @end
