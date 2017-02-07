@@ -7,6 +7,8 @@
 //
 
 #import "RPParseHelper.h"
+#import "PFFacebookUtils.h"
+#import "FBHelper.h"
 
 @implementation RPParseHelper
 
@@ -37,19 +39,54 @@
 //    [currentInstallation saveInBackground];
 }
 
-+ (BOOL)verifiedUserIsLoggedIn
++ (void)userIsLoggedInAndVerifiedWithCompletionBlock:(void (^)(BOOL emailVerified, NSError *error))completionBlock
 {
     PFUser *currentUser = [PFUser currentUser];
     
     if (currentUser) {
-        if (![[currentUser objectForKey:@"emailVerified"] boolValue]) {
-            [currentUser fetch];
+        [RPParseHelper userEmailIsVerified:currentUser completionBlock:^(BOOL emailVerified, NSError *error) {
+            completionBlock(emailVerified, error);
+        }];
+    } else {
+        completionBlock(NO, nil);
+    }
+}
+
++ (void)userEmailIsVerified:(PFUser *)user completionBlock:(void (^)(BOOL emailVerified, NSError *error))completionBlock
+{
+    BOOL linkedWithFacebook = [PFFacebookUtils isLinkedWithUser:user];
+    if (linkedWithFacebook) {
+        if ([FBHelper isLoggedIn]) {
+            completionBlock(YES, nil);
+        } else {
+            completionBlock(NO, nil);
+        }
+    } else {
+        if (![[user objectForKey:@"emailVerified"] boolValue]) {
+            [user fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+                if (error) {
+                    completionBlock(NO, error);
+                } else {
+                    completionBlock([[user objectForKey:@"emailVerified"] boolValue], error);
+                }
+            }];
+        } else {
+            completionBlock([[user objectForKey:@"emailVerified"] boolValue], nil);
         }
     }
-    
-    BOOL emailIsVerified = [[currentUser objectForKey:@"emailVerified"] boolValue];
-    
-    return (currentUser && emailIsVerified);
+}
+
++ (void)logInParseUsingFBCurrentAccessTokenWithCompletionBlock:(void (^)(PFUser *user, NSError *error))completionBlock
+{
+    PFUser *currentUser = [PFUser currentUser];
+    if (!currentUser) {
+        FBSDKAccessToken *accessToken = [FBSDKAccessToken currentAccessToken];
+        [PFFacebookUtils logInInBackgroundWithAccessToken:accessToken block:^(PFUser *user, NSError *error) {
+            completionBlock(user, error);
+        }];
+    } else {
+        completionBlock(currentUser, nil);
+    }
 }
 
 @end

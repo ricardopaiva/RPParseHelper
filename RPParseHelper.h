@@ -37,8 +37,26 @@
 /**
  *  Verifies if current user is logged in and verified.
  *
- *  @return <#return value description#>
+ *  @param completionBlock -> completionBlock that returns BOOL and NSError
  */
-+ (BOOL)verifiedUserIsLoggedIn;
++ (void)userIsLoggedInAndVerifiedWithCompletionBlock:(void (^)(BOOL emailVerified, NSError *error))completionBlock;
+
+/**
+ *  Verifies if user has a verified email.
+ *
+ *  @param user -> user to check.
+ *  @param completionBlock -> completionBlock that returns BOOL and NSError
+ *
+ */
++ (void)userEmailIsVerified:(PFUser *)user completionBlock:(void (^)(BOOL emailVerified, NSError *error))completionBlock;
+
+/**
+ *  If Facebook token is set, uses it to login to Parse
+ *
+ *  @param user -> user to check.
+ *  @param completionBlock -> completionBlock that returns BOOL and NSError
+ *
+ */
++ (void)logInParseUsingFBCurrentAccessTokenWithCompletionBlock:(void (^)(PFUser *user, NSError *error))completionBlock;
 
 @end
