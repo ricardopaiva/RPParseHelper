@@ -8,7 +8,6 @@
 
 #import "RPParseHelper.h"
 #import "PFFacebookUtils.h"
-#import "FBHelper.h"
 
 @implementation RPParseHelper
 
@@ -56,7 +55,7 @@
 {
     BOOL linkedWithFacebook = [PFFacebookUtils isLinkedWithUser:user];
     if (linkedWithFacebook) {
-        if ([FBHelper isLoggedIn]) {
+        if ([FBSDKAccessToken currentAccessToken] != nil) {
             completionBlock(YES, nil);
         } else {
             completionBlock(NO, nil);
