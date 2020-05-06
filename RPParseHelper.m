@@ -7,7 +7,7 @@
 //
 
 #import "RPParseHelper.h"
-#import "PFFacebookUtils.h"
+#import <ParseFacebookUtilsV4/ParseFacebookUtilsV4.h>
 
 @implementation RPParseHelper
 
