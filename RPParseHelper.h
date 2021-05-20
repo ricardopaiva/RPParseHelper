@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+
 @import Parse;
+@import ParseFacebookUtilsV4;
 
 @interface RPParseHelper : NSObject
 
